@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/maheswaradevo/wwx-backend/pkg"
 	"github.com/maheswaradevo/wwx-backend/pkg/config"
+	"github.com/maheswaradevo/wwx-backend/pkg/middlewares"
 	"go.uber.org/zap"
 )
 
@@ -22,7 +23,9 @@ func main() {
 
 	app := echo.New()
 
-	pkg.Init(app, db, logger)
+	authMiddleware := middlewares.NewAuthMiddleware([]byte(cfg.ApiSecretKey))
+
+	pkg.Init(app, db, logger, authMiddleware.AuthMiddleware())
 	app.Validator = nil
 
 	address := fmt.Sprintf("%s:%s", "0.0.0.0", cfg.Port)

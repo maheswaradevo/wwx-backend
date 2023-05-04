@@ -15,11 +15,16 @@ import (
 	"go.uber.org/zap"
 )
 
-func Init(router *echo.Echo, db *sql.DB, logger *zap.Logger) {
+func Init(router *echo.Echo, db *sql.DB, logger *zap.Logger, middleware echo.MiddlewareFunc) {
+	appRestricted := router.Group("api/v1")
+	appRestricted.Use(middleware)
+	{
+
+		InitProjectModule(appRestricted, db, logger)
+	}
 	app := router.Group("api/v1")
 	{
 		InitAuthModule(app, db, logger)
-		InitProjectModule(app, db, logger)
 	}
 }
 

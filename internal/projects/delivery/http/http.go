@@ -1,8 +1,10 @@
 package http
 
 import (
+	"errors"
 	"net/http"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 	"github.com/maheswaradevo/wwx-backend/internal/model"
 	"github.com/maheswaradevo/wwx-backend/internal/projects"
@@ -33,6 +35,11 @@ func ProjectNewDelivery(projectService projects.ProjectService, routeGroupV1 *ec
 func (h ProjectHTTPDelivery) CreateProject(ctx echo.Context) error {
 	var req model.ProjectRequest
 
+	user := ctx.Get("userData").(jwt.MapClaims)
+	role := user["userRole"].(string)
+	if role != "admin" {
+		return h.Unauthorized(ctx, errors.New("Unauthorized"))
+	}
 	if err := ctx.Bind(&req); err != nil {
 		return h.WrapBadRequest(ctx, &common.APIResponse{
 			Code:    http.StatusBadRequest,

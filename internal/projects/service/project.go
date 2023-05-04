@@ -36,3 +36,7 @@ func (s *service) InsertProject(ctx echo.Context, dataRequest model.ProjectReque
 
 	return result, nil
 }
+
+// func (s *service) EditProject(ctx echo.Context, dataRequest model.EditProjectRequest) (*model.Project, error) {
+
+// }

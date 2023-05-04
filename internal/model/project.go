@@ -20,3 +20,13 @@ type ProjectRequest struct {
 	ProposalLink string `json:"proposal_link"`
 	Assign       string `json:"assign"`
 }
+
+type EditProjectRequest struct {
+	ProjectName  string `json:"project_name"`
+	ClientName   string `json:"client_name"`
+	Deadline     string `json:"deadline"`
+	Status       string `json:"status"`
+	Budget       uint64 `json:"budget"`
+	ProposalLink string `json:"proposal_link"`
+	Assign       string `json:"assign"`
+}
