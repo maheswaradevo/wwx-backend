@@ -39,17 +39,9 @@ func (h AuthenticationHTTPDelivery) Login(ctx echo.Context) error {
 		return h.WrapBadRequest(ctx, &common.APIResponse{
 			Code:    http.StatusBadRequest,
 			Message: http.StatusText(http.StatusBadRequest),
-			Errors:  "error binding",
+			Errors:  constants.BindingRequestError,
 		})
 	}
-
-	// if err := ctx.Validate(&req); err != nil {
-	// 	return h.WrapBadRequest(ctx, &common.APIResponse{
-	// 		Code:    http.StatusBadRequest,
-	// 		Message: http.StatusText(http.StatusBadRequest),
-	// 		Errors:  "error validating",
-	// 	})
-	// }
 
 	result, err := h.authService.Login(ctx, req.Username, req.Password)
 	if err != nil {

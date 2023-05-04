@@ -11,4 +11,5 @@ var (
 	ErrMismatchedHashAndPassword = errors.New("wrong password")
 	ErrNoUsernameExist           = errors.New("username not found")
 	InternalServerError          = "Internal Server Error"
+	BindingRequestError          = "Error binding request"
 )

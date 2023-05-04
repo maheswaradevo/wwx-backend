@@ -47,7 +47,7 @@ func (h ProjectHTTPDelivery) CreateProject(ctx echo.Context) error {
 		return h.WrapBadRequest(ctx, &common.APIResponse{
 			Code:    http.StatusBadRequest,
 			Message: http.StatusText(http.StatusBadRequest),
-			Errors:  "error binding",
+			Errors:  constants.BindingRequestError,
 		})
 	}
 
@@ -56,7 +56,7 @@ func (h ProjectHTTPDelivery) CreateProject(ctx echo.Context) error {
 		h.logger.Sugar().Errorf("[createProject] failed to create project, err: %v", err)
 		return h.InternalServerError(ctx, &common.APIResponse{
 			Code:    http.StatusInternalServerError,
-			Message: "Internal Server Error",
+			Message: constants.InternalServerError,
 		})
 	}
 	return h.Ok(ctx, result)
@@ -69,7 +69,7 @@ func (h ProjectHTTPDelivery) EditProject(ctx echo.Context) error {
 		return h.WrapBadRequest(ctx, &common.APIResponse{
 			Code:    http.StatusBadRequest,
 			Message: http.StatusText(http.StatusBadRequest),
-			Errors:  "error binding",
+			Errors:  constants.BindingRequestError,
 		})
 	}
 
