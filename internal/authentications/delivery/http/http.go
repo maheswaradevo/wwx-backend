@@ -2,6 +2,7 @@ package http
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -48,15 +49,22 @@ func (h AuthenticationHTTPDelivery) Login(ctx echo.Context) error {
 		h.logger.Sugar().Errorf("[login] failed to login, err: %v", err)
 		switch {
 		case errors.Is(constants.ErrMismatchedHashAndPassword, err):
-			return h.WrapBadRequest(ctx, &common.APIResponse{
-				Code:    http.StatusBadRequest,
+			respError := common.APIError{
+				Code:    fmt.Sprint(http.StatusBadRequest),
+				Field:   "Credentials",
 				Message: constants.PasswordMismatch,
-			})
+			}
+			apiError := respError.SetInternal(err)
+			return ctx.JSON(http.StatusBadRequest, apiError)
+
 		case errors.Is(constants.ErrNoUsernameExist, err):
-			return h.WrapBadRequest(ctx, &common.APIResponse{
-				Code:    http.StatusBadRequest,
+			respError := common.APIError{
+				Code:    fmt.Sprint(http.StatusBadRequest),
+				Field:   "Username",
 				Message: constants.NoUsernameExists,
-			})
+			}
+			apiError := respError.SetInternal(err)
+			return ctx.JSON(http.StatusBadRequest, apiError)
 		default:
 			return h.InternalServerError(ctx, &common.APIResponse{
 				Code:    http.StatusInternalServerError,
