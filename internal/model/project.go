@@ -8,6 +8,7 @@ type Project struct {
 	Status       string `db:"status"`
 	Budget       uint64 `db:"budget"`
 	ProposalLink string `db:"proposal_link"`
+	Resource     string `db:"resource_link"`
 	Assign       string `db:"assign"`
 }
 
@@ -19,6 +20,7 @@ type ProjectRequest struct {
 	Budget       uint64 `json:"budget"`
 	ProposalLink string `json:"proposal_link"`
 	Assign       string `json:"assign"`
+	Resource     string `json:"resource"`
 }
 
 type EditProjectRequest struct {
@@ -29,4 +31,5 @@ type EditProjectRequest struct {
 	Budget       uint64 `json:"budget"`
 	ProposalLink string `json:"proposal_link"`
 	Assign       string `json:"assign"`
+	Resource     string `json:"resource"`
 }

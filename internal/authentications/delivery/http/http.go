@@ -2,7 +2,6 @@ package http
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -59,17 +58,17 @@ func (h AuthenticationHTTPDelivery) Login(ctx echo.Context) error {
 		case errors.Is(constants.ErrMismatchedHashAndPassword, err):
 			return h.WrapBadRequest(ctx, &common.APIResponse{
 				Code:    http.StatusBadRequest,
-				Message: "Masukkan password yang sesuai",
+				Message: constants.PasswordMismatch,
 			})
 		case errors.Is(constants.ErrNoUsernameExist, err):
 			return h.WrapBadRequest(ctx, &common.APIResponse{
 				Code:    http.StatusBadRequest,
-				Message: fmt.Sprintf("Tidak ada username dengan username %v", req.Username),
+				Message: constants.NoUsernameExists,
 			})
 		default:
 			return h.InternalServerError(ctx, &common.APIResponse{
 				Code:    http.StatusInternalServerError,
-				Message: "Internal Server Error",
+				Message: constants.InternalServerError,
 			})
 		}
 	}

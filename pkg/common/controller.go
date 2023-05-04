@@ -72,3 +72,10 @@ func (c *Controller) InternalServerError(ctx echo.Context, response *APIResponse
 	}
 	return ctx.JSON(http.StatusInternalServerError, &response)
 }
+
+func (c *Controller) DataNotFound(ctx echo.Context, response *APIResponse) error {
+	if response.Code == 0 {
+		response.Code = http.StatusNotFound
+	}
+	return ctx.JSON(http.StatusNotFound, &response)
+}

@@ -7,4 +7,5 @@ import (
 
 type ProjectService interface {
 	InsertProject(ctx echo.Context, dataRequest model.ProjectRequest) (*model.Project, error)
+	EditProject(ctx echo.Context, dataRequest model.EditProjectRequest, projectId int, role string) (*model.Project, error)
 }
