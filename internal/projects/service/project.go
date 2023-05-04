@@ -25,11 +25,12 @@ func (s *service) InsertProject(ctx echo.Context, dataRequest model.ProjectReque
 	result, err := s.repo.InsertProject(helpers.Context(ctx), model.Project{
 		ProjectName:  dataRequest.ProjectName,
 		ClientName:   dataRequest.ClientName,
-		Resource:     dataRequest.Resource,
+		Resource:     "",
 		Deadline:     dataRequest.Deadline,
 		Status:       dataRequest.Status,
 		ProposalLink: dataRequest.ProposalLink,
 		Assign:       dataRequest.Assign,
+		Budget:       0,
 	})
 	if err != nil {
 		s.logger.Sugar().Errorf("[InsertProject] failed to insert project: %v", zap.Error(err))
@@ -82,4 +83,13 @@ func (s *service) EditProject(ctx echo.Context, dataRequest model.EditProjectReq
 		return resp, nil
 	}
 	return nil, nil
+}
+
+func (s *service) SearchProject(ctx echo.Context, projectName string) (projects []*model.Project, err error) {
+	res, err := s.repo.SearchProject(helpers.Context(ctx), projectName)
+	if err != nil {
+		s.logger.Sugar().Errorf("[SearchProject] failed to search project: %v", zap.Error(err))
+		return nil, err
+	}
+	return res, nil
 }

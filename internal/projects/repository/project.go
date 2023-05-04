@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
 	"github.com/maheswaradevo/wwx-backend/internal/model"
 	"github.com/maheswaradevo/wwx-backend/pkg/common/constants"
@@ -87,4 +88,40 @@ func (p projectRepository) UpdateProjectClient(ctx context.Context, data model.E
 		return err
 	}
 	return nil
+}
+
+func (p projectRepository) SearchProject(ctx context.Context, projectName string) (projects []*model.Project, err error) {
+	query := constants.SearchProject
+	queryRes := fmt.Sprintf(query, projectName)
+	stmt, err := p.db.PrepareContext(ctx, queryRes)
+	if err != nil {
+		p.logger.Sugar().Errorf("[SearchProject] failed to prepare the statement: %v", zap.Error(err))
+		return nil, err
+	}
+
+	rows, err := stmt.Query()
+	if err != nil {
+		p.logger.Sugar().Errorf("[SearchProject] failed to query to the database: %v", zap.Error(err))
+		return nil, err
+	}
+	var project model.Project
+	for rows.Next() {
+		err := rows.Scan(
+			&project.ProjectID,
+			&project.ProjectName,
+			&project.ClientName,
+			&project.Deadline,
+			&project.Status,
+			&project.Budget,
+			&project.ProposalLink,
+			&project.Assign,
+			&project.Resource,
+		)
+		if err != nil {
+			p.logger.Sugar().Errorf("[SearhProject] failed to scan data from database: %v", zap.Error(err))
+			return nil, err
+		}
+		projects = append(projects, &project)
+	}
+	return projects, nil
 }
