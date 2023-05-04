@@ -21,8 +21,6 @@ func NewAuthRepository(db *sql.DB, logger *zap.Logger) *authRepository {
 	}
 }
 
-var ()
-
 func (a authRepository) FindByUsername(ctx context.Context, username string) (*model.User, error) {
 	query := constants.CheckUsernameQuery
 	rows := a.db.QueryRowContext(ctx, query, username)
@@ -35,7 +33,7 @@ func (a authRepository) FindByUsername(ctx context.Context, username string) (*m
 		return nil, err
 	} else if err == sql.ErrNoRows {
 		a.logger.Info("[FindByUsername] no data existed")
-		return nil, constants.ErrInvalidResources
+		return nil, constants.ErrNoUsernameExist
 	}
 	return user, nil
 }

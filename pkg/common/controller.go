@@ -65,3 +65,10 @@ func (c *Controller) WrapBadRequest(ctx echo.Context, response *APIResponse) err
 	}
 	return ctx.JSON(http.StatusBadRequest, &response)
 }
+
+func (c *Controller) InternalServerError(ctx echo.Context, response *APIResponse) error {
+	if response.Code == 0 {
+		response.Code = http.StatusInternalServerError
+	}
+	return ctx.JSON(http.StatusInternalServerError, &response)
+}

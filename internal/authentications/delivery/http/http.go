@@ -1,6 +1,8 @@
 package http
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -53,15 +55,23 @@ func (h AuthenticationHTTPDelivery) Login(ctx echo.Context) error {
 	result, err := h.authService.Login(ctx, req.Username, req.Password)
 	if err != nil {
 		h.logger.Sugar().Errorf("[login] failed to login, err: %v", err)
-		return h.WrapBadRequest(ctx, &common.APIResponse{
-			Code:    http.StatusBadRequest,
-			Message: "Masukkan password yang sesuai",
-		})
+		switch {
+		case errors.Is(constants.ErrMismatchedHashAndPassword, err):
+			return h.WrapBadRequest(ctx, &common.APIResponse{
+				Code:    http.StatusBadRequest,
+				Message: "Masukkan password yang sesuai",
+			})
+		case errors.Is(constants.ErrNoUsernameExist, err):
+			return h.WrapBadRequest(ctx, &common.APIResponse{
+				Code:    http.StatusBadRequest,
+				Message: fmt.Sprintf("Tidak ada username dengan username %v", req.Username),
+			})
+		default:
+			return h.InternalServerError(ctx, &common.APIResponse{
+				Code:    http.StatusInternalServerError,
+				Message: "Internal Server Error",
+			})
+		}
 	}
-	var resp = common.APIResponse{
-		Code:    http.StatusOK,
-		Message: constants.LoginSuccess,
-		Data:    result,
-	}
-	return h.Ok(ctx, resp)
+	return h.Ok(ctx, result)
 }
