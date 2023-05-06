@@ -42,7 +42,9 @@ func (h ProjectHTTPDelivery) CreateProject(ctx echo.Context) error {
 
 	user := ctx.Get("userData").(jwt.MapClaims)
 	role := user["userRole"].(string)
-	if role != "admin" {
+	userId := int(user["userId"].(float64))
+
+	if role != constants.RoleAdmin {
 		return h.Unauthorized(ctx, errors.New("Unauthorized"))
 	}
 	if err := ctx.Bind(&req); err != nil {
@@ -52,8 +54,7 @@ func (h ProjectHTTPDelivery) CreateProject(ctx echo.Context) error {
 			Errors:  constants.BindingRequestError,
 		})
 	}
-
-	result, err := h.projectService.InsertProject(ctx, req)
+	result, err := h.projectService.InsertProject(ctx, req, role, userId)
 	if err != nil {
 		h.logger.Sugar().Errorf("[createProject] failed to create project, err: %v", err)
 		return h.InternalServerError(ctx, &common.APIResponse{

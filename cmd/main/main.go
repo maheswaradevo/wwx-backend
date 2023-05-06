@@ -6,6 +6,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/maheswaradevo/wwx-backend/pkg"
 	"github.com/maheswaradevo/wwx-backend/pkg/config"
 	"github.com/maheswaradevo/wwx-backend/pkg/middlewares"
@@ -22,6 +23,10 @@ func main() {
 	db := config.GetDatabase(cfg.Database.Username, cfg.Database.Password, cfg.Database.Address, cfg.Database.Name)
 
 	app := echo.New()
+	app.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://127.0.0.1:5500"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	}))
 
 	authMiddleware := middlewares.NewAuthMiddleware([]byte(cfg.ApiSecretKey))
 

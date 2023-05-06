@@ -21,23 +21,39 @@ func NewProjetService(repo projects.ProjectRepository, logger *zap.Logger) *serv
 	}
 }
 
-func (s *service) InsertProject(ctx echo.Context, dataRequest model.ProjectRequest) (*model.Project, error) {
-	result, err := s.repo.InsertProject(helpers.Context(ctx), model.Project{
-		ProjectName:  dataRequest.ProjectName,
-		ClientName:   dataRequest.ClientName,
-		Resource:     "",
-		Deadline:     dataRequest.Deadline,
-		Status:       dataRequest.Status,
-		ProposalLink: dataRequest.ProposalLink,
-		Assign:       dataRequest.Assign,
-		Budget:       0,
-	})
+func (s *service) InsertProject(ctx echo.Context, dataRequest model.ProjectRequest, role string, userId int) (res *model.Project, err error) {
+	if role == constants.RoleAdmin {
+		res, err = s.repo.InsertProject(helpers.Context(ctx), model.Project{
+			ProjectName:  dataRequest.ProjectName,
+			ClientName:   dataRequest.ClientName,
+			Resource:     dataRequest.Resource,
+			Deadline:     dataRequest.Deadline,
+			Status:       dataRequest.Status,
+			ProposalLink: dataRequest.ProposalLink,
+			Assign:       dataRequest.Assign,
+			Budget:       dataRequest.Budget,
+			UserId:       userId,
+		}, userId)
+	} else if role == constants.RoleClient {
+		res, err = s.repo.InsertProject(helpers.Context(ctx), model.Project{
+			ProjectName:  dataRequest.ProjectName,
+			ClientName:   dataRequest.ClientName,
+			Resource:     "",
+			Deadline:     dataRequest.Deadline,
+			Status:       dataRequest.Status,
+			ProposalLink: dataRequest.ProposalLink,
+			Assign:       dataRequest.Assign,
+			Budget:       0,
+			UserId:       userId,
+		}, userId)
+	}
+
 	if err != nil {
 		s.logger.Sugar().Errorf("[InsertProject] failed to insert project: %v", zap.Error(err))
 		return nil, err
 	}
 
-	return result, nil
+	return res, nil
 }
 
 func (s *service) EditProject(ctx echo.Context, dataRequest model.EditProjectRequest, projectId int, role string) (*model.Project, error) {

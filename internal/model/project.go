@@ -2,6 +2,7 @@ package model
 
 type Project struct {
 	ProjectID    int    `db:"id"`
+	UserId       int    `db:"user_id"`
 	ProjectName  string `db:"project_name"`
 	ClientName   string `db:"client_name"`
 	Deadline     string `db:"deadline"`

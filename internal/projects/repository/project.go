@@ -22,19 +22,20 @@ func NewProjectRepository(db *sql.DB, logger *zap.Logger) *projectRepository {
 	}
 }
 
-func (p projectRepository) InsertProject(ctx context.Context, data model.Project) (*model.Project, error) {
+func (p projectRepository) InsertProject(ctx context.Context, data model.Project, userId int) (*model.Project, error) {
 	query := constants.InsertProject
 	stmt, err := p.db.PrepareContext(ctx, query)
 	if err != nil {
 		p.logger.Sugar().Errorf("[InsertProject] failed to prepare statement: %v", zap.Error(err))
 		return nil, err
 	}
-	res, err := stmt.ExecContext(ctx, data.ProjectName, data.ClientName, data.Resource, data.Deadline, data.Status, data.ProposalLink, data.Assign)
+	res, err := stmt.ExecContext(ctx, data.UserId, data.ProjectName, data.ClientName, data.Resource, data.Deadline, data.Status, data.ProposalLink, data.Assign, data.Budget)
 	if err != nil {
 		p.logger.Sugar().Errorf("[InsertProject] failed to insert user to the database: %v", zap.Error(err))
 	}
 	id, _ := res.LastInsertId()
 	prj := model.Project{
+		UserId:       userId,
 		ProjectID:    int(id),
 		ProjectName:  data.ProjectName,
 		ClientName:   data.ClientName,
@@ -42,6 +43,7 @@ func (p projectRepository) InsertProject(ctx context.Context, data model.Project
 		Status:       data.Status,
 		ProposalLink: data.ProposalLink,
 		Assign:       data.Assign,
+		Budget:       data.Budget,
 	}
 
 	return &prj, nil
@@ -125,3 +127,7 @@ func (p projectRepository) SearchProject(ctx context.Context, projectName string
 	}
 	return projects, nil
 }
+
+// func (p projectRepository) ViewProjectAdmin(ctx context.Context) ([]*model.Project, error) {
+
+// }
