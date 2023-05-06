@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strings"
+	"time"
 
 	"github.com/maheswaradevo/wwx-backend/internal/model"
 	"github.com/maheswaradevo/wwx-backend/pkg/common/constants"
@@ -44,6 +46,7 @@ func (p projectRepository) InsertProject(ctx context.Context, data model.Project
 		ProposalLink: data.ProposalLink,
 		Assign:       data.Assign,
 		Budget:       data.Budget,
+		CreatedAt:    time.Now(),
 	}
 
 	return &prj, nil
@@ -94,7 +97,9 @@ func (p projectRepository) UpdateProjectClient(ctx context.Context, data model.E
 
 func (p projectRepository) SearchProject(ctx context.Context, projectName string) (projects []*model.Project, err error) {
 	query := constants.SearchProject
-	queryRes := fmt.Sprintf(query, projectName)
+	lowerProjectName := strings.ToLower(projectName)
+	queryRes := fmt.Sprintf(query, lowerProjectName)
+
 	stmt, err := p.db.PrepareContext(ctx, queryRes)
 	if err != nil {
 		p.logger.Sugar().Errorf("[SearchProject] failed to prepare the statement: %v", zap.Error(err))
@@ -117,7 +122,9 @@ func (p projectRepository) SearchProject(ctx context.Context, projectName string
 			&project.Budget,
 			&project.ProposalLink,
 			&project.Assign,
+			&project.UserId,
 			&project.Resource,
+			&project.CreatedAt,
 		)
 		if err != nil {
 			p.logger.Sugar().Errorf("[SearhProject] failed to scan data from database: %v", zap.Error(err))
@@ -149,8 +156,9 @@ func (p projectRepository) ViewProject(ctx context.Context, userId int) (res []*
 				&prj.Budget,
 				&prj.ProposalLink,
 				&prj.Assign,
-				&prj.Resource,
 				&prj.UserId,
+				&prj.Resource,
+				&prj.CreatedAt,
 			)
 			if err != nil {
 				p.logger.Sugar().Errorf("[ViewProjectAdmin] failed to scan the data: %v", zap.Error(err))

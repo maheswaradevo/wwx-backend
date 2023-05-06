@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 type Project struct {
 	ProjectID    int    `db:"id"`
 	UserId       int    `db:"user_id"`
@@ -11,6 +13,7 @@ type Project struct {
 	ProposalLink string `db:"proposal_link"`
 	Resource     string `db:"resource_link"`
 	Assign       string `db:"assign"`
+	CreatedAt    time.Time
 }
 
 type ProjectRequest struct {
