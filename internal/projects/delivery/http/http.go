@@ -2,7 +2,6 @@ package http
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -33,6 +32,7 @@ func ProjectNewDelivery(projectService projects.ProjectService, routeGroupV1 *ec
 		routeGroup.POST("/", projectDelivery.CreateProject)
 		routeGroup.PUT("/:projectId", projectDelivery.EditProject)
 		routeGroup.POST("/search", projectDelivery.SearchProject)
+		routeGroup.GET("/", projectDelivery.ViewProject)
 	}
 	return
 }
@@ -103,7 +103,6 @@ func (h ProjectHTTPDelivery) EditProject(ctx echo.Context) error {
 func (h ProjectHTTPDelivery) SearchProject(ctx echo.Context) error {
 	queryVar := ctx.QueryParams()
 	projectName := queryVar.Get("projectName")
-	fmt.Printf("projectName: %v\n", projectName)
 	result, err := h.projectService.SearchProject(ctx, projectName)
 	if err != nil {
 		return h.InternalServerError(ctx, &common.APIResponse{
@@ -112,4 +111,18 @@ func (h ProjectHTTPDelivery) SearchProject(ctx echo.Context) error {
 		})
 	}
 	return h.Ok(ctx, result)
+}
+
+func (h ProjectHTTPDelivery) ViewProject(ctx echo.Context) error {
+	user := ctx.Get("userData").(jwt.MapClaims)
+	userId := int(user["userId"].(float64))
+
+	res, err := h.projectService.ViewProject(ctx, userId)
+	if err != nil {
+		return h.InternalServerError(ctx, &common.APIResponse{
+			Code:    http.StatusInternalServerError,
+			Message: constants.InternalServerError,
+		})
+	}
+	return h.Ok(ctx, res)
 }

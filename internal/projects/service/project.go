@@ -109,3 +109,12 @@ func (s *service) SearchProject(ctx echo.Context, projectName string) (projects 
 	}
 	return res, nil
 }
+
+func (s *service) ViewProject(ctx echo.Context, userId int) (projects []*model.Project, err error) {
+	res, err := s.repo.ViewProject(helpers.Context(ctx), userId)
+	if err != nil {
+		s.logger.Sugar().Errorf("[ViewProject] failed to view the project: %v", zap.Error(err))
+		return nil, err
+	}
+	return res, nil
+}
