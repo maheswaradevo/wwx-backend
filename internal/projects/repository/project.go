@@ -159,6 +159,7 @@ func (p projectRepository) ViewProject(ctx context.Context, userId int) (res []*
 				&prj.UserId,
 				&prj.Resource,
 				&prj.CreatedAt,
+				&prj.Maintenance,
 			)
 			if err != nil {
 				p.logger.Sugar().Errorf("[ViewProjectAdmin] failed to scan the data: %v", zap.Error(err))
@@ -196,5 +197,67 @@ func (p projectRepository) ViewProject(ctx context.Context, userId int) (res []*
 		}
 	}
 
+	return res, nil
+}
+
+func (p projectRepository) InsertMaintenanceProject(ctx context.Context, data model.Project, userId int) (*model.Project, error) {
+	query := constants.InsertMaintenanceProject
+	stmt, err := p.db.PrepareContext(ctx, query)
+	if err != nil {
+		p.logger.Sugar().Errorf("[InsertProject] failed to prepare statement: %v", zap.Error(err))
+		return nil, err
+	}
+	res, err := stmt.ExecContext(ctx, data.UserId, data.ProjectName, data.ClientName, data.Resource, data.Deadline, data.Status, data.ProposalLink, data.Assign, data.Budget, data.Maintenance)
+	if err != nil {
+		p.logger.Sugar().Errorf("[InsertProject] failed to insert user to the database: %v", zap.Error(err))
+	}
+	id, _ := res.LastInsertId()
+	prj := model.Project{
+		UserId:       userId,
+		ProjectID:    int(id),
+		ProjectName:  data.ProjectName,
+		ClientName:   data.ClientName,
+		Deadline:     data.Deadline,
+		Status:       data.Status,
+		ProposalLink: data.ProposalLink,
+		Assign:       data.Assign,
+		Budget:       data.Budget,
+		Maintenance:  1,
+		CreatedAt:    time.Now(),
+	}
+
+	return &prj, nil
+}
+
+func (p projectRepository) ViewMaintenanceProject(ctx context.Context) (res []*model.Project, err error) {
+	query := constants.ViewMaintenanceProject
+	rows, err := p.db.QueryContext(ctx, query)
+	if err != nil {
+		p.logger.Sugar().Errorf("[ViewMaintenanceProject] failed to query to the database: %v", zap.Error(err))
+		return nil, err
+	}
+
+	for rows.Next() {
+		prj := model.Project{}
+		err := rows.Scan(
+			&prj.ProjectID,
+			&prj.ProjectName,
+			&prj.ClientName,
+			&prj.Deadline,
+			&prj.Status,
+			&prj.Budget,
+			&prj.ProposalLink,
+			&prj.Assign,
+			&prj.UserId,
+			&prj.Resource,
+			&prj.CreatedAt,
+			&prj.Maintenance,
+		)
+		if err != nil {
+			p.logger.Sugar().Errorf("[ViewProjectAdmin] failed to scan the data: %v", zap.Error(err))
+			return nil, err
+		}
+		res = append(res, &prj)
+	}
 	return res, nil
 }

@@ -56,6 +56,28 @@ func (s *service) InsertProject(ctx echo.Context, dataRequest model.ProjectReque
 	return res, nil
 }
 
+func (s *service) InsertMaintenanceProject(ctx echo.Context, dataRequest model.ProjectRequest, userId int) (res *model.Project, err error) {
+	res, err = s.repo.InsertMaintenanceProject(helpers.Context(ctx), model.Project{
+		ProjectName:  dataRequest.ProjectName,
+		ClientName:   dataRequest.ClientName,
+		Resource:     dataRequest.Resource,
+		Deadline:     dataRequest.Deadline,
+		Status:       dataRequest.Status,
+		ProposalLink: dataRequest.ProposalLink,
+		Assign:       dataRequest.Assign,
+		Budget:       dataRequest.Budget,
+		UserId:       userId,
+		Maintenance:  1,
+	}, userId)
+
+	if err != nil {
+		s.logger.Sugar().Errorf("[InsertMaintenancec] failed to insert project: %v", zap.Error(err))
+		return nil, err
+	}
+
+	return res, nil
+}
+
 func (s *service) EditProject(ctx echo.Context, dataRequest model.EditProjectRequest, projectId int, role string) (*model.Project, error) {
 	exist, err := s.repo.CheckProject(helpers.Context(ctx), projectId)
 	if err != nil {

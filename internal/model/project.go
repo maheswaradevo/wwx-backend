@@ -3,17 +3,18 @@ package model
 import "time"
 
 type Project struct {
-	ProjectID    int    `db:"id"`
-	UserId       int    `db:"user_id"`
-	ProjectName  string `db:"project_name"`
-	ClientName   string `db:"client_name"`
-	Deadline     string `db:"deadline"`
-	Status       string `db:"status"`
-	Budget       uint64 `db:"budget"`
-	ProposalLink string `db:"proposal_link"`
-	Resource     string `db:"resource_link"`
-	Assign       string `db:"assign"`
-	CreatedAt    time.Time
+	ProjectID    int       `db:"id"`
+	UserId       int       `db:"user_id"`
+	ProjectName  string    `db:"project_name"`
+	ClientName   string    `db:"client_name"`
+	Deadline     string    `db:"deadline"`
+	Status       string    `db:"status"`
+	Budget       uint64    `db:"budget"`
+	ProposalLink string    `db:"proposal_link"`
+	Resource     string    `db:"resource_link"`
+	Assign       string    `db:"assign"`
+	Maintenance  int       `db:"maintenance"`
+	CreatedAt    time.Time `db:"created_at"`
 }
 
 type ProjectRequest struct {
@@ -36,4 +37,5 @@ type EditProjectRequest struct {
 	ProposalLink string `json:"proposal_link"`
 	Assign       string `json:"assign"`
 	Resource     string `json:"resource"`
+	Maintenance  int    `json:"maintenance"`
 }

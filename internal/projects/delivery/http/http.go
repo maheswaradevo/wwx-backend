@@ -30,6 +30,7 @@ func ProjectNewDelivery(projectService projects.ProjectService, routeGroupV1 *ec
 	routeGroup = projectDelivery.routeGroupV1.Group("/projects")
 	{
 		routeGroup.POST("/", projectDelivery.CreateProject)
+		routeGroup.POST("/maintenance", projectDelivery.CreateMaintenanceProject)
 		routeGroup.PUT("/:projectId", projectDelivery.EditProject)
 		routeGroup.POST("/search", projectDelivery.SearchProject)
 		routeGroup.GET("/", projectDelivery.ViewProject)
@@ -125,4 +126,28 @@ func (h ProjectHTTPDelivery) ViewProject(ctx echo.Context) error {
 		})
 	}
 	return h.Ok(ctx, res)
+}
+
+func (h ProjectHTTPDelivery) CreateMaintenanceProject(ctx echo.Context) error {
+	var req model.ProjectRequest
+
+	user := ctx.Get("userData").(jwt.MapClaims)
+	userId := int(user["userId"].(float64))
+
+	if err := ctx.Bind(&req); err != nil {
+		return h.WrapBadRequest(ctx, &common.APIResponse{
+			Code:    http.StatusBadRequest,
+			Message: http.StatusText(http.StatusBadRequest),
+			Errors:  constants.BindingRequestError,
+		})
+	}
+	result, err := h.projectService.InsertMaintenanceProject(ctx, req, userId)
+	if err != nil {
+		h.logger.Sugar().Errorf("[createProject] failed to create project, err: %v", err)
+		return h.InternalServerError(ctx, &common.APIResponse{
+			Code:    http.StatusInternalServerError,
+			Message: constants.InternalServerError,
+		})
+	}
+	return h.Ok(ctx, result)
 }
