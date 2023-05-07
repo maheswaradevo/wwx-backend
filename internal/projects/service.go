@@ -14,4 +14,5 @@ type ProjectService interface {
 	ViewProject(ctx echo.Context, userId int, status string) (projects []*model.Project, err error)
 	DeleteProject(ctx echo.Context, projectId int) error
 	ViewClientProject(ctx echo.Context, userId int) (res []*model.Project, err error)
+	ViewClientMaintenanceProject(ctx echo.Context) (projects []*model.Project, err error)
 }

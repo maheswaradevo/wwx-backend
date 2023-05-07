@@ -177,3 +177,12 @@ func (s *service) ViewClientProject(ctx echo.Context, userId int) (res []*model.
 	}
 	return res, nil
 }
+
+func (s *service) ViewClientMaintenanceProject(ctx echo.Context) (projects []*model.Project, err error) {
+	res, err := s.repo.ViewClientMaintenanceProject(helpers.Context(ctx))
+	if err != nil {
+		s.logger.Sugar().Errorf("[ViewClientMaintenanceProject] failed to view the project: %v", zap.Error(err))
+		return nil, err
+	}
+	return res, nil
+}

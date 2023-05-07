@@ -16,5 +16,6 @@ type ProjectRepository interface {
 	SearchProject(ctx context.Context, projectName string) (projects []*model.Project, err error)
 	ViewAdminProject(ctx context.Context, userId int, status string) (res []*model.Project, err error)
 	DeleteProject(ctx context.Context, projectId int) error
+	ViewClientMaintenanceProject(ctx context.Context) (res []*model.Project, err error)
 	ViewClientProject(ctx context.Context, userId int) (res []*model.Project, err error)
 }

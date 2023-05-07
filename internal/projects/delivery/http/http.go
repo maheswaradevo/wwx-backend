@@ -32,6 +32,7 @@ func ProjectNewDelivery(projectService projects.ProjectService, routeGroupV1 *ec
 		routeGroup.POST("/", projectDelivery.CreateProject)
 		routeGroup.POST("/maintenance", projectDelivery.CreateMaintenanceProject)
 		routeGroup.GET("/maintenance", projectDelivery.ViewMaintenanceProject)
+		routeGroup.GET("/client/maintenance", projectDelivery.ViewClientMaintenanceProject)
 		routeGroup.PUT("/:projectId", projectDelivery.EditProject)
 		routeGroup.POST("/search", projectDelivery.SearchProject)
 		routeGroup.POST("/view", projectDelivery.ViewProject)
@@ -143,6 +144,17 @@ func (h ProjectHTTPDelivery) ViewProject(ctx echo.Context) error {
 
 func (h ProjectHTTPDelivery) ViewMaintenanceProject(ctx echo.Context) error {
 	res, err := h.projectService.ViewMaintenanceProject(ctx)
+	if err != nil {
+		return h.InternalServerError(ctx, &common.APIResponse{
+			Code:    http.StatusInternalServerError,
+			Message: constants.InternalServerError,
+		})
+	}
+	return h.Ok(ctx, res)
+}
+
+func (h ProjectHTTPDelivery) ViewClientMaintenanceProject(ctx echo.Context) error {
+	res, err := h.projectService.ViewClientMaintenanceProject(ctx)
 	if err != nil {
 		return h.InternalServerError(ctx, &common.APIResponse{
 			Code:    http.StatusInternalServerError,

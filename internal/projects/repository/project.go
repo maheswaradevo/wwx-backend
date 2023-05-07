@@ -274,3 +274,36 @@ func (p projectRepository) ViewClientProject(ctx context.Context, userId int) (r
 	}
 	return res, nil
 }
+
+func (p projectRepository) ViewClientMaintenanceProject(ctx context.Context) (res []*model.Project, err error) {
+	query := constants.ViewMaintenanceClientProject
+	rows, err := p.db.QueryContext(ctx, query)
+	if err != nil {
+		p.logger.Sugar().Errorf("[ViewMaintenanceProject] failed to query to the database: %v", zap.Error(err))
+		return nil, err
+	}
+
+	for rows.Next() {
+		prj := model.Project{}
+		err := rows.Scan(
+			&prj.ProjectID,
+			&prj.ProjectName,
+			&prj.ClientName,
+			&prj.Deadline,
+			&prj.Status,
+			&prj.Budget,
+			&prj.ProposalLink,
+			&prj.Assign,
+			&prj.UserId,
+			&prj.Resource,
+			&prj.CreatedAt,
+			&prj.Maintenance,
+		)
+		if err != nil {
+			p.logger.Sugar().Errorf("[ViewProjectAdmin] failed to scan the data: %v", zap.Error(err))
+			return nil, err
+		}
+		res = append(res, &prj)
+	}
+	return res, nil
+}
