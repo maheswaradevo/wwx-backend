@@ -133,7 +133,7 @@ func (s *service) SearchProject(ctx echo.Context, projectName string) (projects 
 }
 
 func (s *service) ViewProject(ctx echo.Context, userId int, status string) (projects []*model.Project, err error) {
-	res, err := s.repo.ViewProject(helpers.Context(ctx), userId, status)
+	res, err := s.repo.ViewAdminProject(helpers.Context(ctx), userId, status)
 	if err != nil {
 		s.logger.Sugar().Errorf("[ViewProject] failed to view the project: %v", zap.Error(err))
 		return nil, err
@@ -167,4 +167,13 @@ func (s *service) DeleteProject(ctx echo.Context, projectId int) error {
 		return err
 	}
 	return nil
+}
+
+func (s *service) ViewClientProject(ctx echo.Context, userId int) (res []*model.Project, err error) {
+	res, err = s.repo.ViewClientProject(helpers.Context(ctx), userId)
+	if err != nil {
+		s.logger.Sugar().Errorf("[ViewProject] failed to view the project: %v", zap.Error(err))
+		return nil, err
+	}
+	return res, nil
 }

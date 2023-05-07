@@ -135,7 +135,7 @@ func (p projectRepository) SearchProject(ctx context.Context, projectName string
 	return projects, nil
 }
 
-func (p projectRepository) ViewProject(ctx context.Context, userId int, status string) (res []*model.Project, err error) {
+func (p projectRepository) ViewAdminProject(ctx context.Context, userId int, status string) (res []*model.Project, err error) {
 	var query string
 	if userId == 1 {
 		query = constants.ViewProjectAdmin
@@ -167,36 +167,7 @@ func (p projectRepository) ViewProject(ctx context.Context, userId int, status s
 			}
 			res = append(res, &prj)
 		}
-	} else {
-		query = constants.ViewProject
-		rowsClient, err := p.db.QueryContext(ctx, query, userId)
-		if err != nil {
-			p.logger.Sugar().Errorf("[ViewProjectAdmin] failed to query to the database: %v", zap.Error(err))
-			return nil, err
-		}
-
-		for rowsClient.Next() {
-			prj := model.Project{}
-			err := rowsClient.Scan(
-				&prj.ProjectID,
-				&prj.ProjectName,
-				&prj.ClientName,
-				&prj.Deadline,
-				&prj.Status,
-				&prj.Budget,
-				&prj.ProposalLink,
-				&prj.Assign,
-				&prj.Resource,
-				&prj.UserId,
-			)
-			if err != nil {
-				p.logger.Sugar().Errorf("[ViewProjectAdmin] failed to scan the data: %v", zap.Error(err))
-				return nil, err
-			}
-			res = append(res, &prj)
-		}
 	}
-
 	return res, nil
 }
 
@@ -271,4 +242,35 @@ func (p projectRepository) DeleteProject(ctx context.Context, projectId int) err
 		return err
 	}
 	return nil
+}
+
+func (p projectRepository) ViewClientProject(ctx context.Context, userId int) (res []*model.Project, err error) {
+	query := constants.ViewProject
+	rowsClient, err := p.db.QueryContext(ctx, query, userId)
+	if err != nil {
+		p.logger.Sugar().Errorf("[ViewProjectAdmin] failed to query to the database: %v", zap.Error(err))
+		return nil, err
+	}
+
+	for rowsClient.Next() {
+		prj := model.Project{}
+		err := rowsClient.Scan(
+			&prj.ProjectID,
+			&prj.ProjectName,
+			&prj.ClientName,
+			&prj.Deadline,
+			&prj.Status,
+			&prj.Budget,
+			&prj.ProposalLink,
+			&prj.Assign,
+			&prj.Resource,
+			&prj.UserId,
+		)
+		if err != nil {
+			p.logger.Sugar().Errorf("[ViewProjectAdmin] failed to scan the data: %v", zap.Error(err))
+			return nil, err
+		}
+		res = append(res, &prj)
+	}
+	return res, nil
 }
