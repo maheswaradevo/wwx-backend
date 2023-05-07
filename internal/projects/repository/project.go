@@ -135,11 +135,11 @@ func (p projectRepository) SearchProject(ctx context.Context, projectName string
 	return projects, nil
 }
 
-func (p projectRepository) ViewProject(ctx context.Context, userId int) (res []*model.Project, err error) {
+func (p projectRepository) ViewProject(ctx context.Context, userId int, status string) (res []*model.Project, err error) {
 	var query string
 	if userId == 1 {
 		query = constants.ViewProjectAdmin
-		rowsAdmin, err := p.db.QueryContext(ctx, query)
+		rowsAdmin, err := p.db.QueryContext(ctx, query, status)
 		if err != nil {
 			p.logger.Sugar().Errorf("[ViewProjectAdmin] failed to query to the database: %v", zap.Error(err))
 			return nil, err

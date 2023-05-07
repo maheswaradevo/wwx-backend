@@ -39,3 +39,7 @@ type EditProjectRequest struct {
 	Resource     string `json:"resource"`
 	Maintenance  int    `json:"maintenance"`
 }
+
+type ProjectViewRequest struct {
+	Status string `json:"status"`
+}

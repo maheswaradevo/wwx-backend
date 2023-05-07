@@ -34,7 +34,7 @@ func ProjectNewDelivery(projectService projects.ProjectService, routeGroupV1 *ec
 		routeGroup.GET("/maintenance", projectDelivery.ViewMaintenanceProject)
 		routeGroup.PUT("/:projectId", projectDelivery.EditProject)
 		routeGroup.POST("/search", projectDelivery.SearchProject)
-		routeGroup.GET("/", projectDelivery.ViewProject)
+		routeGroup.POST("/view", projectDelivery.ViewProject)
 	}
 	return
 }
@@ -116,10 +116,20 @@ func (h ProjectHTTPDelivery) SearchProject(ctx echo.Context) error {
 }
 
 func (h ProjectHTTPDelivery) ViewProject(ctx echo.Context) error {
+	var req model.ProjectViewRequest
+
+	if err := ctx.Bind(&req); err != nil {
+		return h.WrapBadRequest(ctx, &common.APIResponse{
+			Code:    http.StatusBadRequest,
+			Message: http.StatusText(http.StatusBadRequest),
+			Errors:  constants.BindingRequestError,
+		})
+	}
+
 	user := ctx.Get("userData").(jwt.MapClaims)
 	userId := int(user["userId"].(float64))
 
-	res, err := h.projectService.ViewProject(ctx, userId)
+	res, err := h.projectService.ViewProject(ctx, userId, req.Status)
 	if err != nil {
 		return h.InternalServerError(ctx, &common.APIResponse{
 			Code:    http.StatusInternalServerError,
