@@ -12,4 +12,5 @@ type ProjectService interface {
 	EditProject(ctx echo.Context, dataRequest model.EditProjectRequest, projectId int, role string) (*model.Project, error)
 	SearchProject(ctx echo.Context, projectName string) (projects []*model.Project, err error)
 	ViewProject(ctx echo.Context, userId int, status string) (projects []*model.Project, err error)
+	DeleteProject(ctx echo.Context, projectId int) error
 }

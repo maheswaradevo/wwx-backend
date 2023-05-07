@@ -261,3 +261,14 @@ func (p projectRepository) ViewMaintenanceProject(ctx context.Context) (res []*m
 	}
 	return res, nil
 }
+
+func (p projectRepository) DeleteProject(ctx context.Context, projectId int) error {
+	query := constants.DeleteProject
+
+	_, err := p.db.ExecContext(ctx, query, projectId)
+	if err != nil {
+		p.logger.Sugar().Errorf("[DeleteProject] failed to delete the data: %v", zap.Error(err))
+		return err
+	}
+	return nil
+}

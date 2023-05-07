@@ -149,3 +149,22 @@ func (s *service) ViewMaintenanceProject(ctx echo.Context) (projects []*model.Pr
 	}
 	return res, nil
 }
+
+func (s *service) DeleteProject(ctx echo.Context, projectId int) error {
+	exist, err := s.repo.CheckProject(helpers.Context(ctx), projectId)
+	if err != nil {
+		s.logger.Sugar().Errorf("[EditProject] failed to check product with, err: %v", zap.Error(err))
+		return err
+	}
+	if !exist {
+		err = constants.ErrDataNotFound
+		s.logger.Sugar().Errorf("[EditProject] project not found, err: %v", zap.Error(err))
+		return err
+	}
+	err = s.repo.DeleteProject(helpers.Context(ctx), projectId)
+	if err != nil {
+		s.logger.Sugar().Errorf("[DeleteProject] failed to delete project")
+		return err
+	}
+	return nil
+}

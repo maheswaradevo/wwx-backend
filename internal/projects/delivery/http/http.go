@@ -35,6 +35,7 @@ func ProjectNewDelivery(projectService projects.ProjectService, routeGroupV1 *ec
 		routeGroup.PUT("/:projectId", projectDelivery.EditProject)
 		routeGroup.POST("/search", projectDelivery.SearchProject)
 		routeGroup.POST("/view", projectDelivery.ViewProject)
+		routeGroup.DELETE("/:projectId", projectDelivery.DeleteProject)
 	}
 	return
 }
@@ -172,4 +173,22 @@ func (h ProjectHTTPDelivery) CreateMaintenanceProject(ctx echo.Context) error {
 		})
 	}
 	return h.Ok(ctx, result)
+}
+
+func (h ProjectHTTPDelivery) DeleteProject(ctx echo.Context) error {
+	projectId := ctx.Param("projectId")
+	projectIdConv, _ := strconv.Atoi(projectId)
+
+	err := h.projectService.DeleteProject(ctx, projectIdConv)
+	if err != nil {
+		h.logger.Sugar().Errorf("[DeleteProject] failed to delete project: %v", err)
+		return h.InternalServerError(ctx, &common.APIResponse{
+			Code:    http.StatusInternalServerError,
+			Message: constants.InternalServerError,
+		})
+	}
+	return h.Ok(ctx, common.APIResponse{
+		Code:    http.StatusOK,
+		Message: "Deleted",
+	})
 }

@@ -10,6 +10,7 @@ const (
 	ViewProject              = "SELECT p.id, p.project_name, p.client_name, p.deadline, p.status, p.budget, p.proposal_link, p.assign, p.resource_link, p.user_id FROM projects p INNER JOIN users u ON u.id = p.user_id WHERE u.id = ? ORDER BY p.created_at DESC;"
 	ViewProjectAdmin         = "SELECT * FROM projects WHERE status = ? ORDER BY created_at DESC ;"
 	ViewMaintenanceProject   = "SELECT * FROM projects WHERE maintenance = 1;"
+	DeleteProject            = "DELETE FROM projects WHERE id = ?;"
 )
 
 var (

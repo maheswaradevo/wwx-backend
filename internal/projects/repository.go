@@ -15,4 +15,5 @@ type ProjectRepository interface {
 	UpdateProjectClient(ctx context.Context, data model.EditProjectRequest, projectId int) error
 	SearchProject(ctx context.Context, projectName string) (projects []*model.Project, err error)
 	ViewProject(ctx context.Context, userId int, status string) (res []*model.Project, err error)
+	DeleteProject(ctx context.Context, projectId int) error
 }
