@@ -47,6 +47,7 @@ func (p projectRepository) InsertProject(ctx context.Context, data model.Project
 		Assign:       data.Assign,
 		Budget:       data.Budget,
 		CreatedAt:    time.Now(),
+		Resource:     data.Resource,
 	}
 
 	return &prj, nil
@@ -125,6 +126,7 @@ func (p projectRepository) SearchProject(ctx context.Context, projectName string
 			&project.UserId,
 			&project.Resource,
 			&project.CreatedAt,
+			&project.Maintenance,
 		)
 		if err != nil {
 			p.logger.Sugar().Errorf("[SearhProject] failed to scan data from database: %v", zap.Error(err))
