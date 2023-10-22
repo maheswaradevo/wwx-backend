@@ -13,6 +13,17 @@ import (
 	"go.uber.org/zap"
 )
 
+// @title Wonderworxs Dashboard API
+// @version 1.0
+// @description API used by Wonderworxs to manage projects from client
+// @termsOfService http://swagger.io/terms/
+// @contact.name API Support
+// @contact.email pundadevo21@gmail.com
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/license/LICENSE-2.0.html
+// @host localhost:8080
+// @BasePath /
+
 func main() {
 	config.Init()
 

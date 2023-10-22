@@ -97,14 +97,14 @@ func (s *service) EditProject(ctx echo.Context, dataRequest model.EditProjectReq
 		}
 		var resp = &model.Project{
 			ProjectID:    projectId,
-			ProjectName:  dataRequest.ProjectName,
-			ClientName:   dataRequest.ClientName,
-			Deadline:     dataRequest.Deadline,
-			Status:       dataRequest.Status,
-			Budget:       dataRequest.Budget,
-			ProposalLink: dataRequest.ProposalLink,
-			Resource:     dataRequest.Resource,
-			Assign:       dataRequest.Assign,
+			ProjectName:  *dataRequest.ProjectName,
+			ClientName:   *dataRequest.ClientName,
+			Deadline:     *dataRequest.Deadline,
+			Status:       *dataRequest.Status,
+			Budget:       *dataRequest.Budget,
+			ProposalLink: *dataRequest.ProposalLink,
+			Resource:     *dataRequest.Resource,
+			Assign:       *dataRequest.Assign,
 		}
 		return resp, nil
 	} else if role == constants.RoleClient {
@@ -115,8 +115,7 @@ func (s *service) EditProject(ctx echo.Context, dataRequest model.EditProjectReq
 		}
 		var resp = &model.Project{
 			ProjectID: projectId,
-			Budget:    dataRequest.Budget,
-			Resource:  dataRequest.Resource,
+			Budget:    *dataRequest.Budget,
 		}
 		return resp, nil
 	}
