@@ -212,7 +212,7 @@ func (h ProjectHTTPDelivery) ViewProject(ctx echo.Context) error {
 //		@Failure		400		                     {object}	common.APIError
 //		@Failure		404		                     {object}	common.APIError
 //		@Failure		500		                     {object}	common.APIError
-//		@Router			/maintenance [get]
+//		@Router			/projects/maintenance [get]
 func (h ProjectHTTPDelivery) ViewMaintenanceProject(ctx echo.Context) error {
 	res, err := h.projectService.ViewMaintenanceProject(ctx)
 	if err != nil {

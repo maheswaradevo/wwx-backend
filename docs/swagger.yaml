@@ -200,38 +200,6 @@ paths:
       tags:
       - View Client Project Maintenance
   /maintenance:
-    get:
-      consumes:
-      - application/json
-      description: API Endpoint for view the project that's on maintenance status
-      parameters:
-      - description: Bearer Token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/model.Project'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/common.APIError'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/common.APIError'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/common.APIError'
-      summary: View project that on maintenance status
-      tags:
-      - View Project Maintenance
     post:
       consumes:
       - application/json
@@ -426,6 +394,39 @@ paths:
       summary: View client project
       tags:
       - View Client Project
+  /projects/maintenance:
+    get:
+      consumes:
+      - application/json
+      description: API Endpoint for view the project that's on maintenance status
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Project'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIError'
+      summary: View project that on maintenance status
+      tags:
+      - View Project Maintenance
   /projects/search:
     post:
       consumes:
