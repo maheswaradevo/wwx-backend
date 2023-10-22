@@ -20,12 +20,12 @@ func main() {
 
 	logger, _ := zap.NewProduction()
 
-	db := config.GetDatabase(cfg.Database.Username, cfg.Database.Password, cfg.Database.Address, cfg.Database.Name)
+	db := config.GetDatabase(cfg.Database.Username, cfg.Database.Password, cfg.Database.Address, cfg.Database.Port, cfg.Database.Name)
 
 	app := echo.New()
 	app.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://127.0.0.1:5500"},
-		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+		AllowOrigins: []string{"http://127.0.0.1:5501"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
 	}))
 
 	authMiddleware := middlewares.NewAuthMiddleware([]byte(cfg.ApiSecretKey))

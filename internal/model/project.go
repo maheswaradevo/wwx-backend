@@ -43,3 +43,7 @@ type EditProjectRequest struct {
 type ProjectViewRequest struct {
 	Status string `json:"status"`
 }
+
+type ProjectViewEditRequest struct {
+	ProjectID int `json:"project_id"`
+}

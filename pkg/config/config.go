@@ -48,11 +48,12 @@ func Init() {
 	config.ApiSecretKey = os.Getenv("SECRET_KEY")
 }
 
-func GetDatabase(username, password, address, databaseName string) *sql.DB {
+func GetDatabase(username, password, address, port, databaseName string) *sql.DB {
 	log.Printf("INFO GetDatabase database connection: starting database connection process")
 
-	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true",
-		username, password, address, databaseName)
+	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true",
+		username, password, address, port, databaseName)
+	fmt.Printf("dataSourceName: %v\n", dataSourceName)
 	db, err := sql.Open("mysql", dataSourceName)
 	if err != nil {
 		log.Fatalf("Error GetDatabase sql open connection fatal error: %v", err)

@@ -38,6 +38,7 @@ func ProjectNewDelivery(projectService projects.ProjectService, routeGroupV1 *ec
 		routeGroup.POST("/view", projectDelivery.ViewProject)
 		routeGroup.GET("/client/view", projectDelivery.ViewClientProject)
 		routeGroup.DELETE("/:projectId", projectDelivery.DeleteProject)
+		routeGroup.POST("/view/edit/:projectId", projectDelivery.ViewEditProject)
 	}
 	return
 }
@@ -208,11 +209,26 @@ func (h ProjectHTTPDelivery) DeleteProject(ctx echo.Context) error {
 
 func (h ProjectHTTPDelivery) ViewClientProject(ctx echo.Context) error {
 	user := ctx.Get("userData").(jwt.MapClaims)
-	userId := int(user["userId"].(float64))
+	username := user["username"].(string)
 
-	res, err := h.projectService.ViewClientProject(ctx, userId)
+	res, err := h.projectService.ViewClientProject(ctx, username)
 	if err != nil {
 		h.logger.Sugar().Errorf("[ViewClientProject] failed to view client project: %v", err)
+		return h.InternalServerError(ctx, &common.APIResponse{
+			Code:    http.StatusInternalServerError,
+			Message: constants.InternalServerError,
+		})
+	}
+	return h.Ok(ctx, res)
+}
+
+func (h ProjectHTTPDelivery) ViewEditProject(ctx echo.Context) error {
+	projectId := ctx.Param("projectId")
+	projectIdConv, _ := strconv.Atoi(projectId)
+
+	res, err := h.projectService.ViewEditProject(ctx, projectIdConv)
+	if err != nil {
+		h.logger.Sugar().Errorf("[ViewEditProject] failed to view client project: %v", err)
 		return h.InternalServerError(ctx, &common.APIResponse{
 			Code:    http.StatusInternalServerError,
 			Message: constants.InternalServerError,

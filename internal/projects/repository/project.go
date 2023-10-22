@@ -246,9 +246,9 @@ func (p projectRepository) DeleteProject(ctx context.Context, projectId int) err
 	return nil
 }
 
-func (p projectRepository) ViewClientProject(ctx context.Context, userId int) (res []*model.Project, err error) {
-	query := constants.ViewProject
-	rowsClient, err := p.db.QueryContext(ctx, query, userId)
+func (p projectRepository) ViewClientProject(ctx context.Context, username string) (res []*model.Project, err error) {
+	query := constants.ViewProjectClient
+	rowsClient, err := p.db.QueryContext(ctx, query, username)
 	if err != nil {
 		p.logger.Sugar().Errorf("[ViewProjectAdmin] failed to query to the database: %v", zap.Error(err))
 		return nil, err
@@ -277,6 +277,35 @@ func (p projectRepository) ViewClientProject(ctx context.Context, userId int) (r
 	return res, nil
 }
 
+func (p projectRepository) ViewEditProject(ctx context.Context, projectId int) (res []*model.Project, err error) {
+	query := constants.ViewEditProject
+	rows, err := p.db.QueryContext(ctx, query, projectId)
+	if err != nil {
+		p.logger.Sugar().Errorf("[ViewEditProject] failed to query to the database: %v", zap.Error(err))
+		return nil, err
+	}
+
+	for rows.Next() {
+		prj := model.Project{}
+		err := rows.Scan(
+			&prj.ProjectID,
+			&prj.ProjectName,
+			&prj.ClientName,
+			&prj.Deadline,
+			&prj.Status,
+			&prj.Budget,
+			&prj.ProposalLink,
+			&prj.Assign,
+			&prj.Resource,
+		)
+		if err != nil {
+			p.logger.Sugar().Errorf("[ViewEditProject] failed to scan the data: %v", zap.Error(err))
+			return nil, err
+		}
+		res = append(res, &prj)
+	}
+	return res, nil
+}
 func (p projectRepository) ViewClientMaintenanceProject(ctx context.Context) (res []*model.Project, err error) {
 	query := constants.ViewMaintenanceClientProject
 	rows, err := p.db.QueryContext(ctx, query)
