@@ -216,9 +216,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/model.Project'
-            type: array
+            $ref: '#/definitions/model.Project'
         "400":
           description: Bad Request
           schema:

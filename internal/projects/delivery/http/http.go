@@ -208,7 +208,7 @@ func (h ProjectHTTPDelivery) ViewProject(ctx echo.Context) error {
 //		@Accept			json
 //		@Produce		json
 //	    @Param			Authorization	header	     string                 true     "Bearer Token"
-//		@Success		200		                     {array}	model.Project
+//		@Success		200		                     {object}	model.Project
 //		@Failure		400		                     {object}	common.APIError
 //		@Failure		404		                     {object}	common.APIError
 //		@Failure		500		                     {object}	common.APIError
