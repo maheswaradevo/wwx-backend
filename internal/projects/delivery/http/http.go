@@ -236,7 +236,7 @@ func (h ProjectHTTPDelivery) ViewMaintenanceProject(ctx echo.Context) error {
 //		@Failure		400		                     {object}	common.APIError
 //		@Failure		404		                     {object}	common.APIError
 //		@Failure		500		                     {object}	common.APIError
-//		@Router			/client/maintenance [get]
+//		@Router			/projects/client/maintenance [get]
 func (h ProjectHTTPDelivery) ViewClientMaintenanceProject(ctx echo.Context) error {
 	user := ctx.Get("userData").(jwt.MapClaims)
 	username := user["username"].(string)

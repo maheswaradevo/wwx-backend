@@ -163,42 +163,6 @@ paths:
       summary: Login to the website
       tags:
       - Login
-  /client/maintenance:
-    get:
-      consumes:
-      - application/json
-      description: API Endpoint for view the client project that's on maintenance
-        status
-      parameters:
-      - description: Bearer Token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/model.Project'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/common.APIError'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/common.APIError'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/common.APIError'
-      summary: View client project that on maintenance status
-      tags:
-      - View Client Project Maintenance
   /maintenance:
     post:
       consumes:
@@ -358,6 +322,42 @@ paths:
       summary: Edit a project
       tags:
       - Edit Project
+  /projects/client/maintenance:
+    get:
+      consumes:
+      - application/json
+      description: API Endpoint for view the client project that's on maintenance
+        status
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Project'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIError'
+      summary: View client project that on maintenance status
+      tags:
+      - View Client Project Maintenance
   /projects/client/view:
     get:
       consumes:
