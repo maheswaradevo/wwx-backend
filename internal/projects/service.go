@@ -10,10 +10,10 @@ type ProjectService interface {
 	InsertMaintenanceProject(ctx echo.Context, dataRequest model.ProjectRequest, userId int) (res *model.Project, err error)
 	ViewMaintenanceProject(ctx echo.Context) (projects []*model.Project, err error)
 	EditProject(ctx echo.Context, dataRequest model.EditProjectRequest, projectId int, role string) (*model.Project, error)
-	SearchProject(ctx echo.Context, projectName string) (projects []*model.Project, err error)
+	SearchProject(ctx echo.Context, projectName string) (projects []model.Project, err error)
 	ViewProject(ctx echo.Context, userId int, status string) (projects []*model.Project, err error)
 	DeleteProject(ctx echo.Context, projectId int) error
 	ViewClientProject(ctx echo.Context, username string) (res []*model.Project, err error)
-	ViewClientMaintenanceProject(ctx echo.Context) (projects []*model.Project, err error)
+	ViewClientMaintenanceProject(ctx echo.Context, username string) (projects []*model.Project, err error)
 	ViewEditProject(ctx echo.Context, projectId int) (res []*model.Project, err error)
 }

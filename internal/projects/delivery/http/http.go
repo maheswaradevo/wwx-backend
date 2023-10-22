@@ -38,7 +38,7 @@ func ProjectNewDelivery(projectService projects.ProjectService, routeGroupV1 *ec
 		routeGroup.POST("/view", projectDelivery.ViewProject)
 		routeGroup.GET("/client/view", projectDelivery.ViewClientProject)
 		routeGroup.DELETE("/:projectId", projectDelivery.DeleteProject)
-		routeGroup.POST("/view/edit/:projectId", projectDelivery.ViewEditProject)
+		routeGroup.GET("/view/edit/:projectId", projectDelivery.ViewEditProject)
 	}
 	return
 }
@@ -238,7 +238,9 @@ func (h ProjectHTTPDelivery) ViewMaintenanceProject(ctx echo.Context) error {
 //		@Failure		500		                     {object}	common.APIError
 //		@Router			/client/maintenance [get]
 func (h ProjectHTTPDelivery) ViewClientMaintenanceProject(ctx echo.Context) error {
-	res, err := h.projectService.ViewClientMaintenanceProject(ctx)
+	user := ctx.Get("userData").(jwt.MapClaims)
+	username := user["username"].(string)
+	res, err := h.projectService.ViewClientMaintenanceProject(ctx, username)
 	if err != nil {
 		return h.InternalServerError(ctx, &common.APIResponse{
 			Code:    http.StatusInternalServerError,

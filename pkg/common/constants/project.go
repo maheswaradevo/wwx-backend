@@ -11,7 +11,7 @@ const (
 	ViewProjectAdmin             = "SELECT * FROM projects WHERE status = ? ORDER BY created_at DESC ;"
 	ViewMaintenanceProject       = "SELECT * FROM projects WHERE maintenance = 1;"
 	DeleteProject                = "DELETE FROM projects WHERE id = ?;"
-	ViewMaintenanceClientProject = "SELECT * FROM projects WHERE maintenance = 1 and user_id != 1"
+	ViewMaintenanceClientProject = "SELECT * FROM projects WHERE maintenance = 1 and client_name = ?;"
 	ViewEditProject              = "SELECT p.id, p.project_name, p.client_name, p.deadline, p.status, p.budget, p.proposal_link, p.assign, p.resource_link FROM projects p WHERE p.id = ?;"
 )
 

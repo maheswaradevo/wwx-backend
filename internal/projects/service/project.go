@@ -97,14 +97,14 @@ func (s *service) EditProject(ctx echo.Context, dataRequest model.EditProjectReq
 		}
 		var resp = &model.Project{
 			ProjectID:    projectId,
-			ProjectName:  *dataRequest.ProjectName,
-			ClientName:   *dataRequest.ClientName,
-			Deadline:     *dataRequest.Deadline,
-			Status:       *dataRequest.Status,
-			Budget:       *dataRequest.Budget,
-			ProposalLink: *dataRequest.ProposalLink,
-			Resource:     *dataRequest.Resource,
-			Assign:       *dataRequest.Assign,
+			ProjectName:  dataRequest.ProjectName,
+			ClientName:   dataRequest.ClientName,
+			Deadline:     dataRequest.Deadline,
+			Status:       dataRequest.Status,
+			Budget:       dataRequest.Budget,
+			ProposalLink: dataRequest.ProposalLink,
+			Resource:     dataRequest.Resource,
+			Assign:       dataRequest.Assign,
 		}
 		return resp, nil
 	} else if role == constants.RoleClient {
@@ -115,14 +115,14 @@ func (s *service) EditProject(ctx echo.Context, dataRequest model.EditProjectReq
 		}
 		var resp = &model.Project{
 			ProjectID: projectId,
-			Budget:    *dataRequest.Budget,
+			Budget:    dataRequest.Budget,
 		}
 		return resp, nil
 	}
 	return nil, nil
 }
 
-func (s *service) SearchProject(ctx echo.Context, projectName string) (projects []*model.Project, err error) {
+func (s *service) SearchProject(ctx echo.Context, projectName string) (projects []model.Project, err error) {
 	res, err := s.repo.SearchProject(helpers.Context(ctx), projectName)
 	if err != nil {
 		s.logger.Sugar().Errorf("[SearchProject] failed to search project: %v", zap.Error(err))
@@ -186,8 +186,8 @@ func (s *service) ViewEditProject(ctx echo.Context, projectId int) (res []*model
 	return res, nil
 }
 
-func (s *service) ViewClientMaintenanceProject(ctx echo.Context) (projects []*model.Project, err error) {
-	res, err := s.repo.ViewClientMaintenanceProject(helpers.Context(ctx))
+func (s *service) ViewClientMaintenanceProject(ctx echo.Context, username string) (projects []*model.Project, err error) {
+	res, err := s.repo.ViewClientMaintenanceProject(helpers.Context(ctx), username)
 	if err != nil {
 		s.logger.Sugar().Errorf("[ViewClientMaintenanceProject] failed to view the project: %v", zap.Error(err))
 		return nil, err

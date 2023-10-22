@@ -96,7 +96,7 @@ func (p projectRepository) UpdateProjectClient(ctx context.Context, data model.E
 	return nil
 }
 
-func (p projectRepository) SearchProject(ctx context.Context, projectName string) (projects []*model.Project, err error) {
+func (p projectRepository) SearchProject(ctx context.Context, projectName string) (projects []model.Project, err error) {
 	query := constants.SearchProject
 	lowerProjectName := strings.ToLower(projectName)
 	queryRes := fmt.Sprintf(query, lowerProjectName)
@@ -132,7 +132,7 @@ func (p projectRepository) SearchProject(ctx context.Context, projectName string
 			p.logger.Sugar().Errorf("[SearhProject] failed to scan data from database: %v", zap.Error(err))
 			return nil, err
 		}
-		projects = append(projects, &project)
+		projects = append(projects, project)
 	}
 	return projects, nil
 }
@@ -306,9 +306,9 @@ func (p projectRepository) ViewEditProject(ctx context.Context, projectId int) (
 	}
 	return res, nil
 }
-func (p projectRepository) ViewClientMaintenanceProject(ctx context.Context) (res []*model.Project, err error) {
+func (p projectRepository) ViewClientMaintenanceProject(ctx context.Context, username string) (res []*model.Project, err error) {
 	query := constants.ViewMaintenanceClientProject
-	rows, err := p.db.QueryContext(ctx, query)
+	rows, err := p.db.QueryContext(ctx, query, username)
 	if err != nil {
 		p.logger.Sugar().Errorf("[ViewMaintenanceProject] failed to query to the database: %v", zap.Error(err))
 		return nil, err
