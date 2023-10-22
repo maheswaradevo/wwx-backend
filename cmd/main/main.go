@@ -24,7 +24,7 @@ func main() {
 
 	app := echo.New()
 	app.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://127.0.0.1:5501"},
+		AllowOrigins: []string{"http://127.0.0.1:5501", "https://main--resplendent-madeleine-f4afdb.netlify.app/"},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
 	}))
 
