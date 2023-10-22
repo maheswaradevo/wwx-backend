@@ -819,7 +819,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "xxx-backend.deveureka.com",
+	Host:             "xxx-backend.deveureka.com/api/v1",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Wonderworxs Dashboard API",

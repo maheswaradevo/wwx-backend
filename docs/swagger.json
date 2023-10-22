@@ -14,7 +14,7 @@
         },
         "version": "1.0"
     },
-    "host": "xxx-backend.deveureka.com",
+    "host": "xxx-backend.deveureka.com/api/v1",
     "basePath": "/",
     "paths": {
         "/auth/login": {

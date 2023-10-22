@@ -111,7 +111,7 @@ definitions:
       username:
         type: string
     type: object
-host: xxx-backend.deveureka.com
+host: xxx-backend.deveureka.com/api/v1
 info:
   contact:
     email: pundadevo21@gmail.com

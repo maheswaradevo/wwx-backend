@@ -23,7 +23,7 @@ import (
 // @contact.email pundadevo21@gmail.com
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/license/LICENSE-2.0.html
-// @host xxx-backend.deveureka.com
+// @host xxx-backend.deveureka.com/api/v1
 // @BasePath /
 
 func main() {
