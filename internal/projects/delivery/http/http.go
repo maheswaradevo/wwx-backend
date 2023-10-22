@@ -33,7 +33,7 @@ func ProjectNewDelivery(projectService projects.ProjectService, routeGroupV1 *ec
 		routeGroup.POST("/maintenance", projectDelivery.CreateMaintenanceProject)
 		routeGroup.GET("/maintenance", projectDelivery.ViewMaintenanceProject)
 		routeGroup.GET("/client/maintenance", projectDelivery.ViewClientMaintenanceProject)
-		routeGroup.PUT("/:projectId", projectDelivery.EditProject)
+		routeGroup.PATCH("/:projectId", projectDelivery.EditProject)
 		routeGroup.POST("/search", projectDelivery.SearchProject)
 		routeGroup.POST("/view", projectDelivery.ViewProject)
 		routeGroup.GET("/client/view", projectDelivery.ViewClientProject)
