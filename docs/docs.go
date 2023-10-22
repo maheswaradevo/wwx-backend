@@ -494,6 +494,15 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "description": "Fill with project status",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ProjectViewRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -780,6 +789,14 @@ const docTemplate = `{
                 "resource": {
                     "type": "string"
                 },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ProjectViewRequest": {
+            "type": "object",
+            "properties": {
                 "status": {
                     "type": "string"
                 }

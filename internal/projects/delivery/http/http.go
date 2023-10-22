@@ -170,6 +170,7 @@ func (h ProjectHTTPDelivery) SearchProject(ctx echo.Context) error {
 //		@Accept			json
 //		@Produce		json
 //	    @Param			Authorization	header	     string                 true     "Bearer Token"
+//	    @Param			json	body	     model.ProjectViewRequest                 true     "Fill with project status"
 //		@Success		200		                     {array}	model.Project
 //		@Failure		400		                     {object}	common.APIError
 //		@Failure		404		                     {object}	common.APIError

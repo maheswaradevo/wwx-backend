@@ -93,6 +93,11 @@ definitions:
       status:
         type: string
     type: object
+  model.ProjectViewRequest:
+    properties:
+      status:
+        type: string
+    type: object
   model.UserLoginRequest:
     properties:
       password:
@@ -474,6 +479,12 @@ paths:
         name: Authorization
         required: true
         type: string
+      - description: Fill with project status
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProjectViewRequest'
       produces:
       - application/json
       responses:
