@@ -1,0 +1,542 @@
+basePath: /
+definitions:
+  common.APIError:
+    properties:
+      code:
+        type: string
+      field:
+        type: string
+      message: {}
+    type: object
+  common.APIResponse:
+    properties:
+      code:
+        type: integer
+        x-nullable: true
+        x-omitempty: true
+      data:
+        x-nullable: true
+        x-omitempty: true
+      error:
+        x-nullable: true
+        x-omitempty: true
+      errors:
+        x-nullable: true
+        x-omitempty: true
+      message:
+        type: string
+    type: object
+  model.EditProjectRequest:
+    properties:
+      assign:
+        type: string
+      budget:
+        type: integer
+      client_name:
+        type: string
+      deadline:
+        type: string
+      maintenance:
+        type: integer
+      project_name:
+        type: string
+      proposal_link:
+        type: string
+      resource:
+        type: string
+      status:
+        type: string
+    type: object
+  model.Project:
+    properties:
+      assign:
+        type: string
+      budget:
+        type: integer
+      clientName:
+        type: string
+      createdAt:
+        type: string
+      deadline:
+        type: string
+      maintenance:
+        type: integer
+      projectID:
+        type: integer
+      projectName:
+        type: string
+      proposalLink:
+        type: string
+      resource:
+        type: string
+      status:
+        type: string
+      userId:
+        type: integer
+    type: object
+  model.ProjectRequest:
+    properties:
+      assign:
+        type: string
+      budget:
+        type: integer
+      client_name:
+        type: string
+      deadline:
+        type: string
+      project_name:
+        type: string
+      proposal_link:
+        type: string
+      resource:
+        type: string
+      status:
+        type: string
+    type: object
+  model.UserLoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  model.UserLoginResponse:
+    properties:
+      access_token:
+        type: string
+      id:
+        type: integer
+      role:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080/api/v1
+info:
+  contact:
+    email: pundadevo21@gmail.com
+    name: API Support
+  description: API used by Wonderworxs to manage projects from client
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/license/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Wonderworxs Dashboard API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: API Endpoint to user for login to the website
+      parameters:
+      - description: login
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserLoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIError'
+      summary: Login to the website
+      tags:
+      - Login
+  /client/maintenance:
+    get:
+      consumes:
+      - application/json
+      description: API Endpoint for view the client project that's on maintenance
+        status
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Project'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIError'
+      summary: View client project that on maintenance status
+      tags:
+      - View Client Project Maintenance
+  /maintenance:
+    get:
+      consumes:
+      - application/json
+      description: API Endpoint for view the project that's on maintenance status
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Project'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIError'
+      summary: View project that on maintenance status
+      tags:
+      - View Project Maintenance
+    post:
+      consumes:
+      - application/json
+      description: API Endpoint for adding project to the website that need to maintained
+      parameters:
+      - description: createProject
+        in: body
+        name: addProject
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProjectRequest'
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Project'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIError'
+      summary: Add project that needs to be maintained to the website
+      tags:
+      - Create Maintenance Project
+  /projects/:
+    patch:
+      consumes:
+      - application/json
+      description: API Endpoint for editing a project from the website
+      parameters:
+      - description: project id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Fill with project details
+        in: body
+        name: editProject
+        required: true
+        schema:
+          $ref: '#/definitions/model.EditProjectRequest'
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Project'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIError'
+      summary: Edit a project
+      tags:
+      - Edit Project
+    post:
+      consumes:
+      - application/json
+      description: API Endpoint for adding project to the website
+      parameters:
+      - description: createProject
+        in: body
+        name: addProject
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProjectRequest'
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Project'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIError'
+      summary: Add project to the website
+      tags:
+      - Create Project
+  /projects/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: API Endpoint for deleting specified project by it's id
+      parameters:
+      - description: deleteProject
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIError'
+      summary: Delete a project
+      tags:
+      - Delete Project
+  /projects/client/view:
+    get:
+      consumes:
+      - application/json
+      description: API Endpoint for view all of the client project based on their
+        username
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Project'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIError'
+      summary: View client project
+      tags:
+      - View Client Project
+  /projects/search:
+    post:
+      consumes:
+      - application/json
+      description: API Endpoint for searching project in website
+      parameters:
+      - description: searchProject
+        in: path
+        name: searchProject
+        required: true
+        type: string
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Project'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIError'
+      summary: Search for a project
+      tags:
+      - Search Project
+  /projects/view:
+    get:
+      consumes:
+      - application/json
+      description: API Endpoint for view all of the project
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Project'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIError'
+      summary: View Project that exists in the website
+      tags:
+      - View Project
+  /projects/view/edit/{id}:
+    get:
+      consumes:
+      - application/json
+      description: API Endpoint for view all of the data that used in the edit section
+        on the website
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: viewEditProject
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Project'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIError'
+      summary: View edited project in website
+      tags:
+      - View Edit Project
+swagger: "2.0"

@@ -33,6 +33,19 @@ func AuthenticationNewDelivery(authService authentications.AuthService, routeGro
 	return
 }
 
+// Login godoc
+//
+//	@Summary		Login to the website
+//	@Description	API Endpoint to user for login to the website
+//	@Tags			Login
+//	@Accept			json
+//	@Produce		json
+//	@Param			login	body		model.UserLoginRequest	true	"login"
+//	@Success		200		{object}	model.UserLoginResponse
+//	@Failure		400		{object}	common.APIError
+//	@Failure		404		{object}	common.APIError
+//	@Failure		500		{object}	common.APIError
+//	@Router			/auth/login [post]
 func (h AuthenticationHTTPDelivery) Login(ctx echo.Context) error {
 	var req model.UserLoginRequest
 

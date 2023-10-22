@@ -4,12 +4,14 @@ import (
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/maheswaradevo/wwx-backend/docs"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/maheswaradevo/wwx-backend/pkg"
 	"github.com/maheswaradevo/wwx-backend/pkg/config"
 	"github.com/maheswaradevo/wwx-backend/pkg/middlewares"
+	echoSwagger "github.com/swaggo/echo-swagger"
 	"go.uber.org/zap"
 )
 
@@ -21,7 +23,7 @@ import (
 // @contact.email pundadevo21@gmail.com
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/license/LICENSE-2.0.html
-// @host localhost:8080
+// @host xxx-backend.deveureka.com
 // @BasePath /
 
 func main() {
@@ -43,7 +45,7 @@ func main() {
 
 	pkg.Init(app, db, logger, authMiddleware.AuthMiddleware())
 	app.Validator = nil
-
+	app.GET("/swagger/*", echoSwagger.WrapHandler)
 	address := fmt.Sprintf("%s:%s", "0.0.0.0", cfg.Port)
 
 	app.Start(address)

@@ -43,6 +43,20 @@ func ProjectNewDelivery(projectService projects.ProjectService, routeGroupV1 *ec
 	return
 }
 
+// Project godoc
+//
+//		@Summary		Add project to the website
+//		@Description	API Endpoint for adding project to the website
+//		@Tags			Create Project
+//		@Accept			json
+//		@Produce		json
+//		@Param			addProject	    body		 model.ProjectRequest	true	"createProject"
+//	    @Param			Authorization	header	     string                 true     "Bearer Token"
+//		@Success		200		                     {object}	model.Project
+//		@Failure		400		                     {object}	common.APIError
+//		@Failure		404		                     {object}	common.APIError
+//		@Failure		500		                     {object}	common.APIError
+//		@Router			/projects/ [post]
 func (h ProjectHTTPDelivery) CreateProject(ctx echo.Context) error {
 	var req model.ProjectRequest
 
@@ -71,6 +85,21 @@ func (h ProjectHTTPDelivery) CreateProject(ctx echo.Context) error {
 	return h.Ok(ctx, result)
 }
 
+// Project godoc
+//
+//		@Summary		Edit a project
+//		@Description	API Endpoint for editing a project from the website
+//		@Tags			Edit Project
+//		@Accept			json
+//		@Produce		json
+//		@Param			id	    path		 string	true	"project id"
+//		@Param			editProject	    body		 model.EditProjectRequest	true	"Fill with project details"
+//	    @Param			Authorization	header	     string                 true     "Bearer Token"
+//		@Success		200		                     {object}	model.Project
+//		@Failure		400		                     {object}	common.APIError
+//		@Failure		404		                     {object}	common.APIError
+//		@Failure		500		                     {object}	common.APIError
+//		@Router			/projects/ [patch]
 func (h ProjectHTTPDelivery) EditProject(ctx echo.Context) error {
 	var req model.EditProjectRequest
 
@@ -106,6 +135,20 @@ func (h ProjectHTTPDelivery) EditProject(ctx echo.Context) error {
 	return h.Ok(ctx, result)
 }
 
+// SearchProject godoc
+//
+//		@Summary		Search for a project
+//		@Description	API Endpoint for searching project in website
+//		@Tags			Search Project
+//		@Accept			json
+//		@Produce		json
+//		@Param			searchProject	    path		 string	true	"searchProject"
+//	    @Param			Authorization	header	     string                 true     "Bearer Token"
+//		@Success		200		                     {array}	model.Project
+//		@Failure		400		                     {object}	common.APIError
+//		@Failure		404		                     {object}	common.APIError
+//		@Failure		500		                     {object}	common.APIError
+//		@Router			/projects/search [post]
 func (h ProjectHTTPDelivery) SearchProject(ctx echo.Context) error {
 	queryVar := ctx.QueryParams()
 	projectName := queryVar.Get("projectName")
@@ -119,6 +162,19 @@ func (h ProjectHTTPDelivery) SearchProject(ctx echo.Context) error {
 	return h.Ok(ctx, result)
 }
 
+// ViewProject godoc
+//
+//		@Summary		View Project that exists in the website
+//		@Description	API Endpoint for view all of the project
+//		@Tags			View Project
+//		@Accept			json
+//		@Produce		json
+//	    @Param			Authorization	header	     string                 true     "Bearer Token"
+//		@Success		200		                     {array}	model.Project
+//		@Failure		400		                     {object}	common.APIError
+//		@Failure		404		                     {object}	common.APIError
+//		@Failure		500		                     {object}	common.APIError
+//		@Router			/projects/view [get]
 func (h ProjectHTTPDelivery) ViewProject(ctx echo.Context) error {
 	var req model.ProjectViewRequest
 
@@ -143,6 +199,19 @@ func (h ProjectHTTPDelivery) ViewProject(ctx echo.Context) error {
 	return h.Ok(ctx, res)
 }
 
+// ViewMaintenanceProject godoc
+//
+//		@Summary		View project that on maintenance status
+//		@Description	API Endpoint for view the project that's on maintenance status
+//		@Tags			View Project Maintenance
+//		@Accept			json
+//		@Produce		json
+//	    @Param			Authorization	header	     string                 true     "Bearer Token"
+//		@Success		200		                     {array}	model.Project
+//		@Failure		400		                     {object}	common.APIError
+//		@Failure		404		                     {object}	common.APIError
+//		@Failure		500		                     {object}	common.APIError
+//		@Router			/maintenance [get]
 func (h ProjectHTTPDelivery) ViewMaintenanceProject(ctx echo.Context) error {
 	res, err := h.projectService.ViewMaintenanceProject(ctx)
 	if err != nil {
@@ -154,6 +223,19 @@ func (h ProjectHTTPDelivery) ViewMaintenanceProject(ctx echo.Context) error {
 	return h.Ok(ctx, res)
 }
 
+// ViewClientMaintenanceProject godoc
+//
+//		@Summary		View client project that on maintenance status
+//		@Description	API Endpoint for view the client project that's on maintenance status
+//		@Tags			View Client Project Maintenance
+//		@Accept			json
+//		@Produce		json
+//	    @Param			Authorization	header	     string                 true     "Bearer Token"
+//		@Success		200		                     {array}	model.Project
+//		@Failure		400		                     {object}	common.APIError
+//		@Failure		404		                     {object}	common.APIError
+//		@Failure		500		                     {object}	common.APIError
+//		@Router			/client/maintenance [get]
 func (h ProjectHTTPDelivery) ViewClientMaintenanceProject(ctx echo.Context) error {
 	res, err := h.projectService.ViewClientMaintenanceProject(ctx)
 	if err != nil {
@@ -165,6 +247,20 @@ func (h ProjectHTTPDelivery) ViewClientMaintenanceProject(ctx echo.Context) erro
 	return h.Ok(ctx, res)
 }
 
+// CreateMaintenanceProject godoc
+//
+//		@Summary		Add project that needs to be maintained to the website
+//		@Description	API Endpoint for adding project to the website that need to maintained
+//		@Tags			Create Maintenance Project
+//		@Accept			json
+//		@Produce		json
+//		@Param			addProject	    body		 model.ProjectRequest	true	"createProject"
+//	    @Param			Authorization	header	     string                 true     "Bearer Token"
+//		@Success		200		                     {object}	model.Project
+//		@Failure		400		                     {object}	common.APIError
+//		@Failure		404		                     {object}	common.APIError
+//		@Failure		500		                     {object}	common.APIError
+//		@Router			/maintenance [post]
 func (h ProjectHTTPDelivery) CreateMaintenanceProject(ctx echo.Context) error {
 	var req model.ProjectRequest
 
@@ -189,6 +285,20 @@ func (h ProjectHTTPDelivery) CreateMaintenanceProject(ctx echo.Context) error {
 	return h.Ok(ctx, result)
 }
 
+// DeleteProject godoc
+//
+//		@Summary		Delete a project
+//		@Description	API Endpoint for deleting specified project by it's id
+//		@Tags			Delete Project
+//		@Accept			json
+//		@Produce		json
+//		@Param			id	    path		 string	true	"deleteProject"
+//	    @Param			Authorization	header	     string                 true     "Bearer Token"
+//		@Success		200		                     {object}	common.APIResponse
+//		@Failure		400		                     {object}	common.APIError
+//		@Failure		404		                     {object}	common.APIError
+//		@Failure		500		                     {object}	common.APIError
+//		@Router			/projects/{id} [delete]
 func (h ProjectHTTPDelivery) DeleteProject(ctx echo.Context) error {
 	projectId := ctx.Param("projectId")
 	projectIdConv, _ := strconv.Atoi(projectId)
@@ -207,6 +317,19 @@ func (h ProjectHTTPDelivery) DeleteProject(ctx echo.Context) error {
 	})
 }
 
+// ViewClientProject godoc
+//
+//		@Summary		View client project
+//		@Description	API Endpoint for view all of the client project based on their username
+//		@Tags			View Client Project
+//		@Accept			json
+//		@Produce		json
+//	    @Param			Authorization	header	     string                 true     "Bearer Token"
+//		@Success		200		                     {array}	model.Project
+//		@Failure		400		                     {object}	common.APIError
+//		@Failure		404		                     {object}	common.APIError
+//		@Failure		500		                     {object}	common.APIError
+//		@Router			/projects/client/view [get]
 func (h ProjectHTTPDelivery) ViewClientProject(ctx echo.Context) error {
 	user := ctx.Get("userData").(jwt.MapClaims)
 	username := user["username"].(string)
@@ -222,6 +345,20 @@ func (h ProjectHTTPDelivery) ViewClientProject(ctx echo.Context) error {
 	return h.Ok(ctx, res)
 }
 
+// ViewEditProject godoc
+//
+//		@Summary		View edited project in website
+//		@Description	API Endpoint for view all of the data that used in the edit section on the website
+//		@Tags			View Edit Project
+//		@Accept			json
+//		@Produce		json
+//	    @Param			Authorization	header	     string                 true     "Bearer Token"
+//		@Param			id	    path		 string	true	"viewEditProject"
+//		@Success		200		                     {array}	model.Project
+//		@Failure		400		                     {object}	common.APIError
+//		@Failure		404		                     {object}	common.APIError
+//		@Failure		500		                     {object}	common.APIError
+//		@Router			/projects/view/edit/{id} [get]
 func (h ProjectHTTPDelivery) ViewEditProject(ctx echo.Context) error {
 	projectId := ctx.Param("projectId")
 	projectIdConv, _ := strconv.Atoi(projectId)
