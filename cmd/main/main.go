@@ -37,7 +37,7 @@ func main() {
 
 	app := echo.New()
 	app.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://127.0.0.1:5501", "https://wwx-dashboard.netlify.app", "https://wwx-dashboard.vercel.app"},
+		AllowOrigins: []string{"http://127.0.0.1:5501", "https://wwx-dashboard.netlify.app", "https://wwx-dashboard.vercel.app", "https://xxx-backend.deveureka.com"},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
 	}))
 
