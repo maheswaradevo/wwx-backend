@@ -99,7 +99,7 @@ func (h ProjectHTTPDelivery) CreateProject(ctx echo.Context) error {
 //		@Failure		400		                     {object}	common.APIError
 //		@Failure		404		                     {object}	common.APIError
 //		@Failure		500		                     {object}	common.APIError
-//		@Router			/projects/ [patch]
+//		@Router			/projects/{id} [patch]
 func (h ProjectHTTPDelivery) EditProject(ctx echo.Context) error {
 	var req model.EditProjectRequest
 
@@ -142,7 +142,7 @@ func (h ProjectHTTPDelivery) EditProject(ctx echo.Context) error {
 //		@Tags			Search Project
 //		@Accept			json
 //		@Produce		json
-//		@Param			searchProject	    path		 string	true	"searchProject"
+//		@Param			projectName	    query		 string	true	"Project that want to be searched"
 //	    @Param			Authorization	header	     string                 true     "Bearer Token"
 //		@Success		200		                     {array}	model.Project
 //		@Failure		400		                     {object}	common.APIError
