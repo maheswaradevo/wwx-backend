@@ -469,7 +469,7 @@ paths:
       tags:
       - Search Project
   /projects/view:
-    get:
+    post:
       consumes:
       - application/json
       description: API Endpoint for view all of the project

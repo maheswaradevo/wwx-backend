@@ -475,7 +475,7 @@ const docTemplate = `{
             }
         },
         "/projects/view": {
-            "get": {
+            "post": {
                 "description": "API Endpoint for view all of the project",
                 "consumes": [
                     "application/json"

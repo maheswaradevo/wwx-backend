@@ -175,7 +175,7 @@ func (h ProjectHTTPDelivery) SearchProject(ctx echo.Context) error {
 //		@Failure		400		                     {object}	common.APIError
 //		@Failure		404		                     {object}	common.APIError
 //		@Failure		500		                     {object}	common.APIError
-//		@Router			/projects/view [get]
+//		@Router			/projects/view [post]
 func (h ProjectHTTPDelivery) ViewProject(ctx echo.Context) error {
 	var req model.ProjectViewRequest
 
