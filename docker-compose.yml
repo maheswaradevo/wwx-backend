@@ -2,10 +2,10 @@ services:
   sql:
     image: mysql
     environment:
-      - MYSQL_DATABASE: bi3k8xqenzqsem1bjh9e
-      - MYSQL_USER: uemeugaakoerlgp8
-      - MYSQL_PASSWORD: M57q7ZsUWLQ55Sb49FGE
-      - MYSQL_ROOT_PASSWORD: M57q7ZsUWLQ55Sb49FGE
+      - MYSQL_DATABASE=bi3k8xqenzqsem1bjh9e
+      - MYSQL_USER=uemeugaakoerlgp8
+      - MYSQL_PASSWORD=M57q7ZsUWLQ55Sb49FGE
+      - MYSQL_ROOT_PASSWORD=M57q7ZsUWLQ55Sb49FGE
     ports:
       - "3306:3306"
   wwx-backend:
