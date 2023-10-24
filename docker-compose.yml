@@ -1,0 +1,21 @@
+services:
+  sql:
+    image: mysql
+    environment:
+      - MYSQL_DATABASE: bi3k8xqenzqsem1bjh9e
+      - MYSQL_USER: uemeugaakoerlgp8
+      - MYSQL_PASSWORD: M57q7ZsUWLQ55Sb49FGE
+      - MYSQL_ROOT_PASSWORD: M57q7ZsUWLQ55Sb49FGE
+    ports:
+      - "3306:3306"
+  wwx-backend:
+    restart: on-failure
+    environment:
+      - DATABASE_HOST=sql
+      - DATABASE_USER=uemeugaakoerlgp8
+      - DATABASE_PASSWORD=M57q7ZsUWLQ55Sb49FGE
+      - DATABASE_NAME=bi3k8xqenzqsem1bjh9e
+      - DATABASE_PORT=3306
+    build: .
+    ports:
+      - "8080:8080"
